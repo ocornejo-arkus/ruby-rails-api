@@ -1,11 +1,14 @@
 class ArticlesController < ApplicationController
+    include Paginable
+
     def index
-        articles = Article.all
-        render json: serializer.new(articles), status: :ok
+        paginated = paginate(Article.recent)
+        render_collection(paginated)
     end
 
     def show
-        render json: {}
+        article = Article.find(params[:id])
+        render json: serializer.new(article)
     end
 
     private
