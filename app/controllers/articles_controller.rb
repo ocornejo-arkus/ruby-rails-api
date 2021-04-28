@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+    skip_before_action :authorize!, only: [:index, :show]
+
     include Paginable
 
     def index
