@@ -17,6 +17,9 @@ class ArticlesController < ApplicationController
     #     render json: { message: e.message, detail: "Here will be nicely formatted response" }
     end
 
+    def create
+    end
+
     private
         def serializer
             ArticleSerializer
