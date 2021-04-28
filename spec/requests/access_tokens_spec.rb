@@ -35,7 +35,34 @@ RSpec.describe AccessTokensController do
     end
 
     context 'when success request' do
-      
+      let(:user_data) do
+        {
+          login: 'jsmith1',
+          url: 'http://example.com',
+          avatar_url: 'http://example.com/avatar',
+          name: 'John Smith',
+        }
+      end
+
+      subject { post '/login', params: { code: 'valid_code' } }
+
+      it 'should return 201 status code' do
+        subject
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'should return proper json body' do
+        expect{ subject }.to change{ User.count }.by(1)
+        user = User.find_by(login: 'jsmith1')
+        token = user_access_token
+        pp token.token
+        pp token.reload.token
+        expect(json_data['attributes']).to eq(
+          { 
+            'token' => user.access_token.token
+          }
+        )
+      end
     end
   end
 end
